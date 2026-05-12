@@ -1,0 +1,211 @@
+[
+  {
+    "name": "课表提醒-星期一07:30",
+    "schedule": {
+      "kind": "cron",
+      "expr": "30 07 * * 1",
+      "tz": "Asia/Shanghai"
+    },
+    "sessionTarget": "isolated",
+    "payload": {
+      "kind": "agentTurn",
+      "message": "你是一个课表提醒助手。学期首周周一 = 2026-03-02。\n\n你的任务：\n1. 获取当前日期，计算「今天是第几周」：\n   weekNum = floor((今天 - 2026-03-02) / 7天) + 1\n2. 遍历以下课程列表，筛选出 weekNumbers 包含当前周的课程：\n[\n  {\n    \"name\": \"数字媒介技术原理与前沿\",\n    \"teacher\": \"王威力\",\n    \"room\": \"1-4061\",\n    \"startTime\": \"08:00\",\n    \"endTime\": \"12:00\",\n    \"weeks\": [\n      1,\n      2,\n      3,\n      4,\n      5,\n      6,\n      7,\n      8\n    ]\n  }\n]\n3. 如果今天有课 → 输出提醒消息（格式见下方）\n4. 如果今天没课 → 只回复 NO_REPLY\n\n提醒消息格式（有课时）：\n📚 {课程名}\n👤 {教师}  📍 {教室}\n⏰ {开始时间}-{结束时间}  📅 第{当前周}周\n（多门课用空行分隔）\n\n要求：\n- 不要解释你是谁，不要打招呼\n- 只输出提醒消息或 NO_REPLY\n- 用 emoji 点缀，控制在每条课 2-3 行",
+      "timeoutSeconds": 60
+    },
+    "delivery": {
+      "mode": "announce",
+      "channel": "qqbot",
+      "to": "qqbot:c2c:8f2dc47be3258b297f8d8d372e00b3d0"
+    }
+  },
+  {
+    "name": "课表提醒-星期二07:30",
+    "schedule": {
+      "kind": "cron",
+      "expr": "30 07 * * 2",
+      "tz": "Asia/Shanghai"
+    },
+    "sessionTarget": "isolated",
+    "payload": {
+      "kind": "agentTurn",
+      "message": "你是一个课表提醒助手。学期首周周一 = 2026-03-02。\n\n你的任务：\n1. 获取当前日期，计算「今天是第几周」：\n   weekNum = floor((今天 - 2026-03-02) / 7天) + 1\n2. 遍历以下课程列表，筛选出 weekNumbers 包含当前周的课程：\n[\n  {\n    \"name\": \"新闻传播思想史\",\n    \"teacher\": \"吴锋\",\n    \"room\": \"1-4059\",\n    \"startTime\": \"08:00\",\n    \"endTime\": \"12:00\",\n    \"weeks\": [\n      1,\n      2,\n      3,\n      4,\n      5,\n      7,\n      9,\n      10\n    ]\n  }\n]\n3. 如果今天有课 → 输出提醒消息（格式见下方）\n4. 如果今天没课 → 只回复 NO_REPLY\n\n提醒消息格式（有课时）：\n📚 {课程名}\n👤 {教师}  📍 {教室}\n⏰ {开始时间}-{结束时间}  📅 第{当前周}周\n（多门课用空行分隔）\n\n要求：\n- 不要解释你是谁，不要打招呼\n- 只输出提醒消息或 NO_REPLY\n- 用 emoji 点缀，控制在每条课 2-3 行",
+      "timeoutSeconds": 60
+    },
+    "delivery": {
+      "mode": "announce",
+      "channel": "qqbot",
+      "to": "qqbot:c2c:8f2dc47be3258b297f8d8d372e00b3d0"
+    }
+  },
+  {
+    "name": "课表提醒-星期三07:30",
+    "schedule": {
+      "kind": "cron",
+      "expr": "30 07 * * 3",
+      "tz": "Asia/Shanghai"
+    },
+    "sessionTarget": "isolated",
+    "payload": {
+      "kind": "agentTurn",
+      "message": "你是一个课表提醒助手。学期首周周一 = 2026-03-02。\n\n你的任务：\n1. 获取当前日期，计算「今天是第几周」：\n   weekNum = floor((今天 - 2026-03-02) / 7天) + 1\n2. 遍历以下课程列表，筛选出 weekNumbers 包含当前周的课程：\n[\n  {\n    \"name\": \"新媒体数据分析专题研究\",\n    \"teacher\": \"刘蒙阕\",\n    \"room\": \"1-4059\",\n    \"startTime\": \"08:00\",\n    \"endTime\": \"12:00\",\n    \"weeks\": [\n      1,\n      2,\n      3,\n      4,\n      5,\n      6,\n      7,\n      8\n    ]\n  }\n]\n3. 如果今天有课 → 输出提醒消息（格式见下方）\n4. 如果今天没课 → 只回复 NO_REPLY\n\n提醒消息格式（有课时）：\n📚 {课程名}\n👤 {教师}  📍 {教室}\n⏰ {开始时间}-{结束时间}  📅 第{当前周}周\n（多门课用空行分隔）\n\n要求：\n- 不要解释你是谁，不要打招呼\n- 只输出提醒消息或 NO_REPLY\n- 用 emoji 点缀，控制在每条课 2-3 行",
+      "timeoutSeconds": 60
+    },
+    "delivery": {
+      "mode": "announce",
+      "channel": "qqbot",
+      "to": "qqbot:c2c:8f2dc47be3258b297f8d8d372e00b3d0"
+    }
+  },
+  {
+    "name": "课表提醒-星期五07:30",
+    "schedule": {
+      "kind": "cron",
+      "expr": "30 07 * * 5",
+      "tz": "Asia/Shanghai"
+    },
+    "sessionTarget": "isolated",
+    "payload": {
+      "kind": "agentTurn",
+      "message": "你是一个课表提醒助手。学期首周周一 = 2026-03-02。\n\n你的任务：\n1. 获取当前日期，计算「今天是第几周」：\n   weekNum = floor((今天 - 2026-03-02) / 7天) + 1\n2. 遍历以下课程列表，筛选出 weekNumbers 包含当前周的课程：\n[\n  {\n    \"name\": \"媒介文化专题研究\",\n    \"teacher\": \"张窈\",\n    \"room\": \"1-4059\",\n    \"startTime\": \"08:00\",\n    \"endTime\": \"12:00\",\n    \"weeks\": [\n      1,\n      2,\n      3,\n      4,\n      5,\n      6,\n      7,\n      8\n    ]\n  }\n]\n3. 如果今天有课 → 输出提醒消息（格式见下方）\n4. 如果今天没课 → 只回复 NO_REPLY\n\n提醒消息格式（有课时）：\n📚 {课程名}\n👤 {教师}  📍 {教室}\n⏰ {开始时间}-{结束时间}  📅 第{当前周}周\n（多门课用空行分隔）\n\n要求：\n- 不要解释你是谁，不要打招呼\n- 只输出提醒消息或 NO_REPLY\n- 用 emoji 点缀，控制在每条课 2-3 行",
+      "timeoutSeconds": 60
+    },
+    "delivery": {
+      "mode": "announce",
+      "channel": "qqbot",
+      "to": "qqbot:c2c:8f2dc47be3258b297f8d8d372e00b3d0"
+    }
+  },
+  {
+    "name": "课表提醒-星期六07:30",
+    "schedule": {
+      "kind": "cron",
+      "expr": "30 07 * * 6",
+      "tz": "Asia/Shanghai"
+    },
+    "sessionTarget": "isolated",
+    "payload": {
+      "kind": "agentTurn",
+      "message": "你是一个课表提醒助手。学期首周周一 = 2026-03-02。\n\n你的任务：\n1. 获取当前日期，计算「今天是第几周」：\n   weekNum = floor((今天 - 2026-03-02) / 7天) + 1\n2. 遍历以下课程列表，筛选出 weekNumbers 包含当前周的课程：\n[\n  {\n    \"name\": \"新闻传播思想史\",\n    \"teacher\": \"吴锋\",\n    \"room\": \"1-4059\",\n    \"startTime\": \"08:00\",\n    \"endTime\": \"12:00\",\n    \"weeks\": [\n      6\n    ]\n  }\n]\n3. 如果今天有课 → 输出提醒消息（格式见下方）\n4. 如果今天没课 → 只回复 NO_REPLY\n\n提醒消息格式（有课时）：\n📚 {课程名}\n👤 {教师}  📍 {教室}\n⏰ {开始时间}-{结束时间}  📅 第{当前周}周\n（多门课用空行分隔）\n\n要求：\n- 不要解释你是谁，不要打招呼\n- 只输出提醒消息或 NO_REPLY\n- 用 emoji 点缀，控制在每条课 2-3 行",
+      "timeoutSeconds": 60
+    },
+    "delivery": {
+      "mode": "announce",
+      "channel": "qqbot",
+      "to": "qqbot:c2c:8f2dc47be3258b297f8d8d372e00b3d0"
+    }
+  },
+  {
+    "name": "课表提醒-星期一13:30",
+    "schedule": {
+      "kind": "cron",
+      "expr": "30 13 * * 1",
+      "tz": "Asia/Shanghai"
+    },
+    "sessionTarget": "isolated",
+    "payload": {
+      "kind": "agentTurn",
+      "message": "你是一个课表提醒助手。学期首周周一 = 2026-03-02。\n\n你的任务：\n1. 获取当前日期，计算「今天是第几周」：\n   weekNum = floor((今天 - 2026-03-02) / 7天) + 1\n2. 遍历以下课程列表，筛选出 weekNumbers 包含当前周的课程：\n[\n  {\n    \"name\": \"数字人文导论\",\n    \"teacher\": \"廖政贸\",\n    \"room\": \"1-4061\",\n    \"startTime\": \"14:00\",\n    \"endTime\": \"18:00\",\n    \"weeks\": [\n      1,\n      2,\n      3,\n      4,\n      5,\n      6,\n      7,\n      8\n    ]\n  },\n  {\n    \"name\": \"政府传播研究\",\n    \"teacher\": \"杨琳\",\n    \"room\": \"1-4059\",\n    \"startTime\": \"14:00\",\n    \"endTime\": \"18:00\",\n    \"weeks\": [\n      9\n    ]\n  }\n]\n3. 如果今天有课 → 输出提醒消息（格式见下方）\n4. 如果今天没课 → 只回复 NO_REPLY\n\n提醒消息格式（有课时）：\n📚 {课程名}\n👤 {教师}  📍 {教室}\n⏰ {开始时间}-{结束时间}  📅 第{当前周}周\n（多门课用空行分隔）\n\n要求：\n- 不要解释你是谁，不要打招呼\n- 只输出提醒消息或 NO_REPLY\n- 用 emoji 点缀，控制在每条课 2-3 行",
+      "timeoutSeconds": 60
+    },
+    "delivery": {
+      "mode": "announce",
+      "channel": "qqbot",
+      "to": "qqbot:c2c:8f2dc47be3258b297f8d8d372e00b3d0"
+    }
+  },
+  {
+    "name": "课表提醒-星期二13:30",
+    "schedule": {
+      "kind": "cron",
+      "expr": "30 13 * * 2",
+      "tz": "Asia/Shanghai"
+    },
+    "sessionTarget": "isolated",
+    "payload": {
+      "kind": "agentTurn",
+      "message": "你是一个课表提醒助手。学期首周周一 = 2026-03-02。\n\n你的任务：\n1. 获取当前日期，计算「今天是第几周」：\n   weekNum = floor((今天 - 2026-03-02) / 7天) + 1\n2. 遍历以下课程列表，筛选出 weekNumbers 包含当前周的课程：\n[\n  {\n    \"name\": \"新闻传播思想史\",\n    \"teacher\": \"吴锋\",\n    \"room\": \"1-4057\",\n    \"startTime\": \"14:00\",\n    \"endTime\": \"18:00\",\n    \"weeks\": [\n      7\n    ]\n  }\n]\n3. 如果今天有课 → 输出提醒消息（格式见下方）\n4. 如果今天没课 → 只回复 NO_REPLY\n\n提醒消息格式（有课时）：\n📚 {课程名}\n👤 {教师}  📍 {教室}\n⏰ {开始时间}-{结束时间}  📅 第{当前周}周\n（多门课用空行分隔）\n\n要求：\n- 不要解释你是谁，不要打招呼\n- 只输出提醒消息或 NO_REPLY\n- 用 emoji 点缀，控制在每条课 2-3 行",
+      "timeoutSeconds": 60
+    },
+    "delivery": {
+      "mode": "announce",
+      "channel": "qqbot",
+      "to": "qqbot:c2c:8f2dc47be3258b297f8d8d372e00b3d0"
+    }
+  },
+  {
+    "name": "课表提醒-星期三13:30",
+    "schedule": {
+      "kind": "cron",
+      "expr": "30 13 * * 3",
+      "tz": "Asia/Shanghai"
+    },
+    "sessionTarget": "isolated",
+    "payload": {
+      "kind": "agentTurn",
+      "message": "你是一个课表提醒助手。学期首周周一 = 2026-03-02。\n\n你的任务：\n1. 获取当前日期，计算「今天是第几周」：\n   weekNum = floor((今天 - 2026-03-02) / 7天) + 1\n2. 遍历以下课程列表，筛选出 weekNumbers 包含当前周的课程：\n[\n  {\n    \"name\": \"政府传播研究\",\n    \"teacher\": \"杨琳\",\n    \"room\": \"1-4059\",\n    \"startTime\": \"14:00\",\n    \"endTime\": \"18:00\",\n    \"weeks\": [\n      1,\n      2,\n      4,\n      5,\n      6,\n      7,\n      8\n    ]\n  }\n]\n3. 如果今天有课 → 输出提醒消息（格式见下方）\n4. 如果今天没课 → 只回复 NO_REPLY\n\n提醒消息格式（有课时）：\n📚 {课程名}\n👤 {教师}  📍 {教室}\n⏰ {开始时间}-{结束时间}  📅 第{当前周}周\n（多门课用空行分隔）\n\n要求：\n- 不要解释你是谁，不要打招呼\n- 只输出提醒消息或 NO_REPLY\n- 用 emoji 点缀，控制在每条课 2-3 行",
+      "timeoutSeconds": 60
+    },
+    "delivery": {
+      "mode": "announce",
+      "channel": "qqbot",
+      "to": "qqbot:c2c:8f2dc47be3258b297f8d8d372e00b3d0"
+    }
+  },
+  {
+    "name": "课表提醒-星期四13:30",
+    "schedule": {
+      "kind": "cron",
+      "expr": "30 13 * * 4",
+      "tz": "Asia/Shanghai"
+    },
+    "sessionTarget": "isolated",
+    "payload": {
+      "kind": "agentTurn",
+      "message": "你是一个课表提醒助手。学期首周周一 = 2026-03-02。\n\n你的任务：\n1. 获取当前日期，计算「今天是第几周」：\n   weekNum = floor((今天 - 2026-03-02) / 7天) + 1\n2. 遍历以下课程列表，筛选出 weekNumbers 包含当前周的课程：\n[\n  {\n    \"name\": \"Comparative Literature Studies\",\n    \"teacher\": \"魏策策\",\n    \"room\": \"5-2068\",\n    \"startTime\": \"14:00\",\n    \"endTime\": \"18:00\",\n    \"weeks\": [\n      1,\n      2,\n      3,\n      4,\n      5,\n      7,\n      8\n    ]\n  },\n  {\n    \"name\": \"Comparative Literature Studies\",\n    \"teacher\": \"魏策策\",\n    \"room\": \"兴庆校区教二1400\",\n    \"startTime\": \"14:00\",\n    \"endTime\": \"18:00\",\n    \"weeks\": [\n      6\n    ]\n  }\n]\n3. 如果今天有课 → 输出提醒消息（格式见下方）\n4. 如果今天没课 → 只回复 NO_REPLY\n\n提醒消息格式（有课时）：\n📚 {课程名}\n👤 {教师}  📍 {教室}\n⏰ {开始时间}-{结束时间}  📅 第{当前周}周\n（多门课用空行分隔）\n\n要求：\n- 不要解释你是谁，不要打招呼\n- 只输出提醒消息或 NO_REPLY\n- 用 emoji 点缀，控制在每条课 2-3 行",
+      "timeoutSeconds": 60
+    },
+    "delivery": {
+      "mode": "announce",
+      "channel": "qqbot",
+      "to": "qqbot:c2c:8f2dc47be3258b297f8d8d372e00b3d0"
+    }
+  },
+  {
+    "name": "课表提醒-星期五13:30",
+    "schedule": {
+      "kind": "cron",
+      "expr": "30 13 * * 5",
+      "tz": "Asia/Shanghai"
+    },
+    "sessionTarget": "isolated",
+    "payload": {
+      "kind": "agentTurn",
+      "message": "你是一个课表提醒助手。学期首周周一 = 2026-03-02。\n\n你的任务：\n1. 获取当前日期，计算「今天是第几周」：\n   weekNum = floor((今天 - 2026-03-02) / 7天) + 1\n2. 遍历以下课程列表，筛选出 weekNumbers 包含当前周的课程：\n[\n  {\n    \"name\": \"智能新闻生产实训（实践）\",\n    \"teacher\": \"张收鹏\",\n    \"room\": \"1-4059\",\n    \"startTime\": \"14:00\",\n    \"endTime\": \"15:50\",\n    \"weeks\": [\n      1,\n      2,\n      3,\n      5,\n      6,\n      7\n    ]\n  },\n  {\n    \"name\": \"好记者讲好故事——中国新闻传播前沿\",\n    \"teacher\": \"汪文斌\",\n    \"room\": \"1-4115\",\n    \"startTime\": \"14:00\",\n    \"endTime\": \"18:00\",\n    \"weeks\": [\n      9,\n      10,\n      11,\n      12,\n      13,\n      14,\n      15,\n      16\n    ]\n  }\n]\n3. 如果今天有课 → 输出提醒消息（格式见下方）\n4. 如果今天没课 → 只回复 NO_REPLY\n\n提醒消息格式（有课时）：\n📚 {课程名}\n👤 {教师}  📍 {教室}\n⏰ {开始时间}-{结束时间}  📅 第{当前周}周\n（多门课用空行分隔）\n\n要求：\n- 不要解释你是谁，不要打招呼\n- 只输出提醒消息或 NO_REPLY\n- 用 emoji 点缀，控制在每条课 2-3 行",
+      "timeoutSeconds": 60
+    },
+    "delivery": {
+      "mode": "announce",
+      "channel": "qqbot",
+      "to": "qqbot:c2c:8f2dc47be3258b297f8d8d372e00b3d0"
+    }
+  },
+  {
+    "name": "课表提醒-星期四09:40",
+    "schedule": {
+      "kind": "cron",
+      "expr": "40 09 * * 4",
+      "tz": "Asia/Shanghai"
+    },
+    "sessionTarget": "isolated",
+    "payload": {
+      "kind": "agentTurn",
+      "message": "你是一个课表提醒助手。学期首周周一 = 2026-03-02。\n\n你的任务：\n1. 获取当前日期，计算「今天是第几周」：\n   weekNum = floor((今天 - 2026-03-02) / 7天) + 1\n2. 遍历以下课程列表，筛选出 weekNumbers 包含当前周的课程：\n[\n  {\n    \"name\": \"智能新闻生产实训（实践）\",\n    \"teacher\": \"张收鹏\",\n    \"room\": \"1-4059\",\n    \"startTime\": \"10:10\",\n    \"endTime\": \"12:00\",\n    \"weeks\": [\n      4,\n      8\n    ]\n  }\n]\n3. 如果今天有课 → 输出提醒消息（格式见下方）\n4. 如果今天没课 → 只回复 NO_REPLY\n\n提醒消息格式（有课时）：\n📚 {课程名}\n👤 {教师}  📍 {教室}\n⏰ {开始时间}-{结束时间}  📅 第{当前周}周\n（多门课用空行分隔）\n\n要求：\n- 不要解释你是谁，不要打招呼\n- 只输出提醒消息或 NO_REPLY\n- 用 emoji 点缀，控制在每条课 2-3 行",
+      "timeoutSeconds": 60
+    },
+    "delivery": {
+      "mode": "announce",
+      "channel": "qqbot",
+      "to": "qqbot:c2c:8f2dc47be3258b297f8d8d372e00b3d0"
+    }
+  }
+]
