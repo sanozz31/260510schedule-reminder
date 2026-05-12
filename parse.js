@@ -1,16 +1,31 @@
+/**
+ * parse.js — 一键解析课表 HTML
+ *
+ * 用法: node parse.js <课表HTML文件> <首周周一日期> [导出JSON路径]
+ *
+ * 示例: node parse.js xskbcx.html 2026-03-02
+ *       node parse.js my_schedule.html 2026-09-07 courses.json
+ *
+ * 输入: 从教务系统保存的课表 HTML 源码（支持 xjtu GMIS 格式）
+ * 输出: 结构化 JSON（含冬/夏令时、实际日期）
+ */
+
 const fs = require('fs');
 
-// ── Config ──────────────────────────────────────────────
-// Parse CLI: node parse.js <首周周一日期>
-//   semesterStart = first Monday of week 1, format YYYY-MM-DD
-//   Example: node parse.js 2026-03-02
 const args = process.argv.slice(2);
-const semesterStart = args[0] || null;
+const htmlFile = args[0];
+const semesterStart = args[1];
+const outputFile = args[2] || 'courses.json';
 
-if (!semesterStart) {
-  console.error('❌ 缺少学期首周首日参数');
-  console.error('用法: node parse.js <首周周一日期>');
-  console.error('示例: node parse.js 2026-03-02');
+if (!htmlFile || !semesterStart) {
+  console.error('❌ 缺少参数');
+  console.error('用法: node parse.js <课表HTML> <首周周一日期> [输出文件]');
+  console.error('示例: node parse.js xskbcx.html 2026-03-02');
+  process.exit(1);
+}
+
+if (!fs.existsSync(htmlFile)) {
+  console.error(`❌ 文件不存在: ${htmlFile}`);
   process.exit(1);
 }
 
@@ -19,11 +34,41 @@ if (isNaN(startDate.getTime())) {
   console.error('❌ 日期格式无效，请使用 YYYY-MM-DD');
   process.exit(1);
 }
-// ────────────────────────────────────────────────────────
 
-const js = fs.readFileSync('schedule_data.js', 'utf8');
+// ── 步骤1: 从原始 HTML 提取课表数据 JS ──
+console.log(`📄 读取: ${htmlFile}`);
+const rawHtml = fs.readFileSync(htmlFile, 'utf8');
 
-// ── 节次时间映射 (冬令时基准) ──
+// 解码 source-viewer 格式 (line-content spans)
+let decoded;
+if (rawHtml.includes('class="line-content"')) {
+  console.log('🔍 检测到 source-viewer 格式，解码中...');
+  const lineContents = rawHtml.match(/<td class="line-content">(.*?)<\/td>/gs) || [];
+  decoded = lineContents
+    .map(l => l.replace(/<td class="line-content">/, '').replace(/<\/td>/, ''))
+    .join('\n')
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&').replace(/&quot;/g, '"')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/<span[^>]*>/g, '').replace(/<\/span>/g, '')
+    .replace(/<a[^>]*>/g, '').replace(/<\/a>/g, '');
+} else {
+  decoded = rawHtml;
+}
+
+// 提取 function init() 中的课程数据
+const initMatch = decoded.match(/function init\(\)\s*\{([\s\S]*?)\n\s*\}/);
+if (!initMatch) {
+  console.error('❌ 未找到课表数据（function init() 函数）');
+  console.error('   请确认 HTML 来自支持的教务系统（目前支持 xjtu GMIS）');
+  process.exit(1);
+}
+const initJs = initMatch[0];
+console.log('✅ 课表数据提取成功');
+
+// ── 步骤2: 解析课程数据 ──
+
+// 节次时间映射 (冬令时基准)
 const periodTimes = {
   1:  { start: '08:00', end: '08:50', ampm: 'am' },
   2:  { start: '09:00', end: '09:50', ampm: 'am' },
@@ -38,16 +83,16 @@ const periodTimes = {
   11: { start: '21:10', end: '22:00', ampm: 'pm' },
 };
 
-// ── 夏令时规则: 5/1-10/7, 第5节起延后30分钟 ──
 const SUMMER_START = { month: 5, day: 1 };
 const SUMMER_END   = { month: 10, day: 7 };
+
+const weekdayMap = { 1: '星期一', 2: '星期二', 3: '星期三', 4: '星期四', 5: '星期五', 6: '星期六', 7: '星期日' };
+const weekdayCron = { 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '0' };
 
 function add30(time) {
   const [h, m] = time.split(':').map(Number);
   let total = h * 60 + m + 30;
-  const nh = Math.floor(total / 60) % 24;
-  const nm = total % 60;
-  return `${String(nh).padStart(2, '0')}:${String(nm).padStart(2, '0')}`;
+  return `${String(Math.floor(total / 60) % 24).padStart(2, '0')}:${String(total % 60).padStart(2, '0')}`;
 }
 
 function subtract30(time) {
@@ -57,10 +102,6 @@ function subtract30(time) {
   return `${String(Math.floor(total / 60)).padStart(2, '0')}:${String(total % 60).padStart(2, '0')}`;
 }
 
-const weekdayMap = { 1: '星期一', 2: '星期二', 3: '星期三', 4: '星期四', 5: '星期五', 6: '星期六', 7: '星期日' };
-const weekdayCron = { 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '0' };
-
-// ── Parse week string like "第1-8周" or "第1-2，4-8周" ──
 function parseWeeks(weekStr) {
   const weeks = [];
   const parts = weekStr.replace(/第|周/g, '').split(/[，,]/);
@@ -75,7 +116,6 @@ function parseWeeks(weekStr) {
   return [...new Set(weeks)].sort((a, b) => a - b);
 }
 
-// ── Week number → date range ──
 function weekToDates(weekNum) {
   const [y, m, d] = semesterStart.split('-').map(Number);
   const base = new Date(Date.UTC(y, m - 1, d));
@@ -89,7 +129,6 @@ function weekToDates(weekNum) {
   return { mon: fmt(mon), sun: fmt(sun) };
 }
 
-// ── Check if a date is in summer time range ──
 function isSummerTime(dateStr) {
   const d = new Date(dateStr + 'T00:00:00+08:00');
   const m = d.getMonth() + 1;
@@ -100,9 +139,9 @@ function isSummerTime(dateStr) {
   return false;
 }
 
-// ── Extract all td assignments ──
+// 从 init JS 中提取所有 td.innerHTML 赋值
 const courses = [];
-const lines = js.split('\n');
+const lines = initJs.split('\n');
 let currentTdId = null;
 
 for (const line of lines) {
@@ -142,7 +181,12 @@ for (const line of lines) {
   }
 }
 
-// ── Group by course ──
+if (courses.length === 0) {
+  console.error('❌ 未提取到任何课程');
+  process.exit(1);
+}
+
+// 按课程去重
 const courseMap = new Map();
 courses.forEach(c => {
   const key = `${c.courseName}|${c.weekday}|${c.weeks}|${c.room}`;
@@ -158,53 +202,10 @@ courses.forEach(c => {
 const uniqueCourses = Array.from(courseMap.values());
 uniqueCourses.sort((a, b) => a.weekday - b.weekday || a.minPeriod - b.minPeriod);
 
-// ── Print ──
+// ── 输出 ──
 console.log(`📅 学期首周周一: ${semesterStart}`);
-console.log(`☀️  夏令时: ${SUMMER_START.month}/${SUMMER_START.day} - ${SUMMER_END.month}/${SUMMER_END.day} (第5节起+30min)\n`);
+console.log(`☀️  夏令时: ${SUMMER_START.month}/${SUMMER_START.day}-${SUMMER_END.month}/${SUMMER_END.day} (第5节起+30min)\n`);
 
-uniqueCourses.forEach(c => {
-  const winterTime = periodTimes[c.minPeriod];
-  const winterStart = winterTime?.start || '??:??';
-  const isPM = winterTime?.ampm === 'pm';
-
-  const weekNums = parseWeeks(c.weeks);
-  const firstWeek = weekToDates(weekNums[0]);
-  const lastWeek = weekToDates(weekNums[weekNums.length - 1]);
-
-  const summerStart = isPM ? add30(winterStart) : winterStart;
-  const reminderWinter = subtract30(winterStart);
-  const reminderSummer = subtract30(summerStart);
-
-  // Check if any instance falls in summer time
-  const summerWeeks = weekNums.filter(w => {
-    const dates = weekToDates(w);
-    // Get the specific day of week from mon + offset
-    const [y, m, d] = dates.mon.split('-').map(Number);
-    const mon = new Date(Date.UTC(y, m - 1, d));
-    const classDay = new Date(mon);
-    classDay.setUTCDate(mon.getUTCDate() + (c.weekday - 1));
-    return isSummerTime(classDay.toISOString().slice(0, 10));
-  });
-
-  const hasSummer = summerWeeks.length > 0;
-  const hasWinter = summerWeeks.length < weekNums.length;
-  const timeChanges = isPM && (hasSummer && hasWinter || hasSummer && winterStart !== summerStart);
-
-  console.log(`${c.weekdayName} ${winterStart} | ${c.courseName}`);
-  console.log(`  教师: ${c.teacher} | 教室: ${c.room}`);
-  console.log(`  周次: ${c.weeks}`);
-  if (timeChanges && hasWinter && hasSummer) {
-    console.log(`  ❄️  冬令: ${winterStart} | 提醒 ${reminderWinter}`);
-    console.log(`  ☀️  夏令: ${summerStart} | 提醒 ${reminderSummer}`);
-  } else if (hasSummer && winterStart !== summerStart) {
-    console.log(`  ☀️  全程夏令: ${summerStart} | 提醒 ${reminderSummer}`);
-  } else {
-    console.log(`  上课: ${winterStart} | 提醒 ${reminderWinter}`);
-  }
-  console.log();
-});
-
-// ── Output JSON ──
 const output = uniqueCourses.map(c => {
   const winterTime = periodTimes[c.minPeriod];
   const winterStart = winterTime?.start || '??:??';
@@ -220,8 +221,32 @@ const output = uniqueCourses.map(c => {
   const firstWeek = weekToDates(weekNums[0]);
   const lastWeek = weekToDates(weekNums[weekNums.length - 1]);
 
-  // Always use winter reminder time for cron (earliest)
-  // reminderWinter = "HH:MM", cron = "MM HH * * DOW"
+  const summerWeeks = weekNums.filter(w => {
+    const dates = weekToDates(w);
+    const [y, m, d] = dates.mon.split('-').map(Number);
+    const mon = new Date(Date.UTC(y, m - 1, d));
+    const classDay = new Date(mon);
+    classDay.setUTCDate(mon.getUTCDate() + (c.weekday - 1));
+    return isSummerTime(classDay.toISOString().slice(0, 10));
+  });
+
+  const hasSummer = summerWeeks.length > 0;
+  const timeChanges = isPM && (hasSummer || winterStart !== summerStart);
+
+  // 打印
+  console.log(`${c.weekdayName} ${winterStart} | ${c.courseName}`);
+  console.log(`  教师: ${c.teacher} | 教室: ${c.room} | ${c.weeks}`);
+  if (timeChanges && summerWeeks.length < weekNums.length) {
+    console.log(`  ❄️  冬令: ${winterStart} | 提醒 ${reminderWinter}`);
+    console.log(`  ☀️  夏令: ${summerStart} | 提醒 ${reminderSummer}`);
+  } else if (hasSummer && winterStart !== summerStart) {
+    console.log(`  ☀️  全程夏令: ${summerStart} | 提醒 ${reminderSummer}`);
+  } else {
+    console.log(`  提醒: ${reminderWinter}`);
+  }
+  console.log();
+
+  // cron: always use winter reminder time (earliest)
   const [cronH, cronM] = reminderWinter.split(':');
 
   return {
@@ -245,7 +270,6 @@ const output = uniqueCourses.map(c => {
   };
 });
 
-fs.writeFileSync('courses.json', JSON.stringify(output, null, 2));
-console.log(`✅ ${output.length} 门课已保存到 courses.json`);
-console.log(`📋 学期配置: semesterStart=${semesterStart}`);
-console.log(`⏱️  夏令时: ${SUMMER_START.month}/${SUMMER_START.day}-${SUMMER_END.month}/${SUMMER_END.day} (下午第5节起延后30分钟)`);
+fs.writeFileSync(outputFile, JSON.stringify(output, null, 2));
+console.log(`✅ ${output.length} 门课 → ${outputFile}`);
+console.log(`📋 semesterStart=${semesterStart}`);
