@@ -24,7 +24,7 @@ node parse.js <课表HTML文件> <首周周一日期>
 
 ```bash
 node register.js <你的QQ私聊openid>
-# 示例: node register.js 8f2dc47be3258b297f8d8d372e00b3d0
+# 示例: node register.js ……
 ```
 
 **输出**: `register_configs.json` — 可直接用于 cron add 的注册参数
